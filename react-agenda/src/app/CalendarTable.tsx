@@ -1,3 +1,4 @@
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   Table,
@@ -9,6 +10,7 @@ import {
 } from '@material-ui/core';
 import { Icon } from '@material-ui/core';
 import { ICalendar, IEvent } from './backend';
+import { getToday } from './dateFunctions';
 
 const DAYS_OF_WEEK = ['DOM', 'SEG', 'TER', 'QUA', 'QUI', 'SEX', 'SAB'];
 
@@ -42,7 +44,7 @@ interface ICalendarTableProps {
   onClickEvent: (event: IEvent) => void;
 }
 
-export default function CalendarTable(props: ICalendarTableProps) {
+export const CalendarTable = React.memo(function (props: ICalendarTableProps) {
   const { weeks } = props;
   const classes = useStyles();
 
@@ -76,7 +78,14 @@ export default function CalendarTable(props: ICalendarTableProps) {
                     key={cell.date}
                     onClick={me => handleClick(me, cell.date)}
                   >
-                    <div className="font-semibold mb-1">{cell.dayOfMonth}</div>
+                    <div
+                      className={`font-semibold mb-1 ${
+                        cell.date === getToday() &&
+                        'bg-blue-500 text-white rounded-lg inline-block p-1 w-6 h-6'
+                      }`}
+                    >
+                      {cell.dayOfMonth}
+                    </div>
                     {cell.events.map(event => {
                       const color = event.calendar ? event.calendar.color : '#000';
 
@@ -114,4 +123,4 @@ export default function CalendarTable(props: ICalendarTableProps) {
       </Table>
     </TableContainer>
   );
-}
+});

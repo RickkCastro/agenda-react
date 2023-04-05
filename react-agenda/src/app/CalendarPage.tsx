@@ -1,5 +1,5 @@
 import { Box, Button } from '@material-ui/core';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState, useCallback } from 'react';
 import {
   getCalendarsEndPoint,
   getEventsEndPoint,
@@ -8,9 +8,9 @@ import {
   IEvent,
 } from './backend';
 import { useParams } from 'react-router-dom';
-import CalendarsView from './CalendarsView';
-import CalendarHeader from './CalendarHeader';
-import CalendarTable, { ICalendarCell, IEventWithCalendar } from './CalendarTable';
+import { CalendarsView } from './CalendarsView';
+import { CalendarHeader } from './CalendarHeader';
+import { ICalendarCell, IEventWithCalendar, CalendarTable } from './CalendarTable';
 import { EventFormDialog } from './EventFormDialog';
 import { getToday } from './dateFunctions';
 
@@ -23,7 +23,9 @@ export default function CalendarPage() {
 
   const [editingEvent, setEditingEvent] = useState<IEditingEvent | null>(null);
 
-  const weeks = generateCalendar(month + '-01', events, calendars, calendarsSelected);
+  const weeks = useMemo(() => {
+    return generateCalendar(month + '-01', events, calendars, calendarsSelected);
+  }, [month, calendars, events, calendarsSelected]);
 
   const firsDate = weeks[0][0].date;
   const lastDate = weeks[weeks.length - 1][6].date;
@@ -42,23 +44,29 @@ export default function CalendarPage() {
     getEventsEndPoint(firsDate, lastDate).then(setEvents);
   }
 
-  function toggleCalendar(i: number) {
-    const newValue = [...calendarsSelected];
-    newValue[i] = !newValue[i];
-    setCalendarsSelected(newValue);
-  }
+  const toggleCalendar = useCallback(
+    (i: number) => {
+      const newValue = [...calendarsSelected];
+      newValue[i] = !newValue[i];
+      setCalendarsSelected(newValue);
+    },
+    [calendarsSelected]
+  );
 
-  function handlenOpenNewEvent(date: string) {
-    setEditingEvent({
-      date,
-      desc: '',
-      calendarId: calendars[0].id,
-    });
-  }
+  const handlenOpenNewEvent = useCallback(
+    (date: string) => {
+      setEditingEvent({
+        date,
+        desc: '',
+        calendarId: calendars[0].id,
+      });
+    },
+    [calendars]
+  );
 
-  function handleUpdateEvent(event: IEvent) {
+  const handleUpdateEvent = useCallback((event: IEvent) => {
     setEditingEvent(event);
-  }
+  }, []);
 
   return (
     <Box display="flex" height={'100%'} alignItems="stretch">
@@ -103,6 +111,7 @@ function generateCalendar(
   calendars: ICalendar[],
   calendarsSelected: boolean[]
 ): ICalendarCell[][] {
+  console.log('generating calendar');
   const weeks: ICalendarCell[][] = [];
   const jsDate = new Date(date + 'T12:00:00');
   const currentMonth = jsDate.getMonth();

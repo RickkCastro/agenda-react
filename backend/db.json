@@ -58,16 +58,9 @@
     },
     {
       "date": "2023-04-21",
-      "desc": "Niver de namoro <3",
+      "desc": "Niver de namoro <3 <3",
       "calendarId": 1,
-      "id": 15
-    },
-    {
-      "date": "2023-04-04",
-      "desc": "Passear com a athenaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-      "calendarId": 1,
-      "time": "23:56",
-      "id": 19,
+      "id": 15,
       "calendar": {
         "id": 1,
         "name": "Pessoal",
@@ -76,9 +69,15 @@
     },
     {
       "date": "2023-04-04",
-      "desc": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-      "calendarId": 1,
-      "id": 20
+      "desc": "Passear com a athena",
+      "calendarId": 2,
+      "time": "23:56",
+      "id": 19,
+      "calendar": {
+        "id": 1,
+        "name": "Pessoal",
+        "color": "#8E24AA"
+      }
     }
   ]
 }

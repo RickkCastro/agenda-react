@@ -1,15 +1,16 @@
 import React from 'react';
 import { FormControlLabel, Checkbox } from '@material-ui/core';
 import { ICalendar } from './backend';
+import { ICalendarPageAction } from './calendarScreenReducer';
 
 interface ICalendarViewProps {
   calendars: ICalendar[];
-  toggleCalendar: (i: number) => void;
+  dispatch: React.Dispatch<ICalendarPageAction>;
   calendarsSelected: boolean[];
 }
 
 export const CalendarsView = React.memo(function (props: ICalendarViewProps) {
-  const { calendars, calendarsSelected, toggleCalendar } = props;
+  const { calendars, calendarsSelected } = props;
 
   return (
     <>
@@ -21,7 +22,7 @@ export const CalendarsView = React.memo(function (props: ICalendarViewProps) {
               control={
                 <Checkbox
                   checked={calendarsSelected[i]}
-                  onChange={() => toggleCalendar(i)}
+                  onChange={() => props.dispatch({ type: 'toggleCalendar', payload: i })}
                   style={{ color: calendar.color }}
                 />
               }

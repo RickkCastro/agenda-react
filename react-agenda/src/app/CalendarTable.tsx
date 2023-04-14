@@ -11,6 +11,7 @@ import {
 import { Icon } from '@material-ui/core';
 import { ICalendar, IEvent } from './backend';
 import { getToday } from './dateFunctions';
+import { ICalendarPageAction } from './calendarScreenReducer';
 
 const DAYS_OF_WEEK = ['DOM', 'SEG', 'TER', 'QUA', 'QUI', 'SEX', 'SAB'];
 
@@ -40,8 +41,7 @@ export interface ICalendarCell {
 
 interface ICalendarTableProps {
   weeks: ICalendarCell[][];
-  onClickDay: (date: string) => void;
-  onClickEvent: (event: IEvent) => void;
+  dispatch: React.Dispatch<ICalendarPageAction>;
 }
 
 export const CalendarTable = React.memo(function (props: ICalendarTableProps) {
@@ -50,7 +50,7 @@ export const CalendarTable = React.memo(function (props: ICalendarTableProps) {
 
   function handleClick(evt: React.MouseEvent, date: string) {
     if (evt.target === evt.currentTarget) {
-      props.onClickDay(date);
+      props.dispatch({ type: 'new', payload: date });
     }
   }
 
@@ -93,7 +93,7 @@ export const CalendarTable = React.memo(function (props: ICalendarTableProps) {
                         <button
                           key={event.id}
                           className="cursor-pointer text-left w-full my-1 whitespace-nowrap"
-                          onClick={() => props.onClickEvent(event)}
+                          onClick={() => props.dispatch({ type: 'edit', payload: event })}
                         >
                           {event.time ? (
                             <div className="flex items-center space-x-1">

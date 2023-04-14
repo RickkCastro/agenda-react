@@ -1,10 +1,10 @@
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { Icon, IconButton, Avatar, Menu, MenuItem } from '@material-ui/core';
 import { singOutEndPoint } from './backend';
-import { authContext } from './authContext';
+import { useAuthContext } from './authContext';
 
 export default function UserMenu() {
-  const { user, onSingOut } = useContext(authContext);
+  const { user, onSingOut } = useAuthContext();
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
